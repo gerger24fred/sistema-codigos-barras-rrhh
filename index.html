@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Barcode System - Sistema de Códigos de Barras RRHH</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-barcode"></i>
+                    <span>HR Barcode</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link" data-menu="dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="empleados">
+                            <i class="fas fa-users"></i>
+                            <span>Personal</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="sectores">
+                            <i class="fas fa-building"></i>
+                            <span>Sectores</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="grupos">
+                            <i class="fas fa-sitemap"></i>
+                            <span>Grupos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="codigos">
+                            <i class="fas fa-qrcode"></i>
+                            <span>Códigos de Barras</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="reportes">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="busqueda">
+                            <i class="fas fa-search"></i>
+                            <span>Búsqueda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-menu="configuracion">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="Usuario" class="user-avatar">
+                    <div class="user-details">
+                        <p class="user-name">Admin User</p>
+                        <p class="user-role">Administrador</p>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="btn-toggle-sidebar" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="headerSearch" placeholder="Buscar empleado...">
+                    </div>
+                    <div class="header-icons">
+                        <button class="icon-btn" title="Notificaciones">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <button class="icon-btn" title="Configuración">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <div class="dashboard-header">
+                        <h2>Bienvenido al Sistema de Códigos de Barras RRHH</h2>
+                        <p>Gestión profesional de personal y recursos humanos</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Empleados Totales</h3>
+                                <p class="stat-number" id="totalEmpleados">0</p>
+                                <span class="stat-label">Registrados en el sistema</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Sectores</h3>
+                                <p class="stat-number" id="totalSectores">0</p>
+                                <span class="stat-label">Áreas organizacionales</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Grupos</h3>
+                                <p class="stat-number" id="totalGrupos">0</p>
+                                <span class="stat-label">Equipos de trabajo</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Códigos Generados</h3>
+                                <p class="stat-number" id="totalCodigos">0</p>
+                                <span class="stat-label">Códigos de barras activos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Últimos Empleados Registrados</h3>
+                                <a href="#" class="link-view-all" onclick="showMenu('empleados'); return false;">Ver todos</a>
+                            </div>
+                            <div class="card-body">
+                                <div id="ultimosEmpleados" class="recent-list">
+                                    <p class="empty-state">No hay empleados registrados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Personal por Sector</h3>
+                                <a href="#" class="link-view-all" onclick="showMenu('sectores'); return false;">Ver todos</a>
+                            </div>
+                            <div class="card-body">
+                                <div id="personalPorSector" class="sector-list">
+                                    <p class="empty-state">No hay sectores registrados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card full-width">
+                            <div class="card-header">
+                                <h3>Acciones Rápidas</h3>
+                            </div>
+                            <div class="card-body quick-actions">
+                                <button class="btn btn-primary" onclick="showFormEmpleado()">
+                                    <i class="fas fa-plus"></i> Registrar Empleado
+                                </button>
+                                <button class="btn btn-secondary" onclick="showMenu('codigos')">
+                                    <i class="fas fa-barcode"></i> Generar Código
+                                </button>
+                                <button class="btn btn-info" onclick="showMenu('reportes')">
+                                    <i class="fas fa-download"></i> Descargar Reportes
+                                </button>
+                                <button class="btn btn-success" onclick="showMenu('busqueda')">
+                                    <i class="fas fa-search"></i> Buscar Personal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Personal -->
+                <section id="empleados" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Gestión de Personal</h2>
+                            <p>Registro y administración de empleados</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showFormEmpleado()">
+                            <i class="fas fa-plus"></i> Nuevo Empleado
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
+                        <select id="filtroSector">
+                            <option value="">-- Todos los Sectores --</option>
+                        </select>
+                        <select id="filtroGrupo">
+                            <option value="">-- Todos los Grupos --</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="limpiarFiltros()">
+                            <i class="fas fa-redo"></i> Limpiar
+                        </button>
+                    </div>
+
+                    <div class="tabla-responsive">
+                        <table class="tabla-empleados">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Documento</th>
+                                    <th>Sector</th>
+                                    <th>Grupo</th>
+                                    <th>Cargo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyEmpleados">
+                                <tr>
+                                    <td colspan="8" class="text-center">No hay empleados registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Sectores -->
+                <section id="sectores" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Gestión de Sectores</h2>
+                            <p>Áreas organizacionales de la empresa</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showFormSector()">
+                            <i class="fas fa-plus"></i> Nuevo Sector
+                        </button>
+                    </div>
+
+                    <div class="sectores-grid" id="sectoresGrid">
+                        <p class="empty-state">No hay sectores registrados</p>
+                    </div>
+                </section>
+
+                <!-- Grupos -->
+                <section id="grupos" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Gestión de Grupos</h2>
+                            <p>Equipos de trabajo dentro de los sectores</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showFormGrupo()">
+                            <i class="fas fa-plus"></i> Nuevo Grupo
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <select id="filtroSectorGrupos">
+                            <option value="">-- Todos los Sectores --</option>
+                        </select>
+                    </div>
+
+                    <div class="tabla-responsive">
+                        <table class="tabla-grupos">
+                            <thead>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Sector</th>
+                                    <th>Integrantes</th>
+                                    <th>Responsable</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyGrupos">
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay grupos registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Códigos de Barras -->
+                <section id="codigos" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Códigos de Barras</h2>
+                            <p>Generación e impresión de códigos</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showFormGenerarCodigo()">
+                            <i class="fas fa-plus"></i> Generar Código
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <input type="text" id="filtroCodigoBarras" placeholder="Buscar por código...">
+                        <select id="filtroEmpleadoCodigo">
+                            <option value="">-- Seleccionar Empleado --</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="limpiarFiltrosCodigos()">
+                            <i class="fas fa-redo"></i> Limpiar
+                        </button>
+                    </div>
+
+                    <div class="codigos-grid" id="codigosGrid">
+                        <p class="empty-state">No hay códigos de barras generados</p>
+                    </div>
+                </section>
+
+                <!-- Reportes -->
+                <section id="reportes" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Reportes</h2>
+                            <p>Reportes y estadísticas del sistema</p>
+                        </div>
+                    </div>
+
+                    <div class="reportes-grid">
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Personal Activo</h3>
+                            <p class="reporte-numero" id="reporteActivos">0</p>
+                            <button class="btn btn-sm btn-primary" onclick="generarReporte('activos')">
+                                Descargar
+                            </button>
+                        </div>
+
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-user-slash"></i>
+                            </div>
+                            <h3>Personal Inactivo</h3>
+                            <p class="reporte-numero" id="reporteInactivos">0</p>
+                            <button class="btn btn-sm btn-secondary" onclick="generarReporte('inactivos')">
+                                Descargar
+                            </button>
+                        </div>
+
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3>Personal por Sector</h3>
+                            <p class="reporte-numero" id="reportePorSector">-</p>
+                            <button class="btn btn-sm btn-info" onclick="generarReporte('sector')">
+                                Descargar
+                            </button>
+                        </div>
+
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <h3>Personal por Grupo</h3>
+                            <p class="reporte-numero" id="reportePorGrupo">-</p>
+                            <button class="btn btn-sm btn-info" onclick="generarReporte('grupo')">
+                                Descargar
+                            </button>
+                        </div>
+
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <h3>Ingresos por Mes</h3>
+                            <p class="reporte-numero" id="reporteIngresos">-</p>
+                            <button class="btn btn-sm btn-warning" onclick="generarReporte('ingresos')">
+                                Descargar
+                            </button>
+                        </div>
+
+                        <div class="reporte-card">
+                            <div class="reporte-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h3>Reporte General</h3>
+                            <p class="reporte-numero">Completo</p>
+                            <button class="btn btn-sm btn-success" onclick="generarReporte('completo')">
+                                Descargar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card full-width">
+                        <div class="card-header">
+                            <h3>Estadísticas Generales</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="estadisticasDiv" class="estadisticas-container">
+                                <p>Cargando estadísticas...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Búsqueda -->
+                <section id="busqueda" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Búsqueda de Personal</h2>
+                            <p>Buscar empleados por diversos criterios</p>
+                        </div>
+                    </div>
+
+                    <div class="busqueda-container">
+                        <div class="busqueda-filtros">
+                            <input type="text" id="busquedaNombre" placeholder="Nombre o apellido...">
+                            <input type="text" id="busquedaDocumento" placeholder="Documento de identidad...">
+                            <input type="text" id="busquedaCodigo" placeholder="Código de barras...">
+                            <select id="busquedaSector">
+                                <option value="">-- Todos los Sectores --</option>
+                            </select>
+                            <select id="busquedaGrupo">
+                                <option value="">-- Todos los Grupos --</option>
+                            </select>
+                            <select id="busquedaEstado">
+                                <option value="">-- Todos los Estados --</option>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="realizarBusqueda()">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                            <button class="btn btn-secondary" onclick="limpiarBusqueda()">
+                                <i class="fas fa-redo"></i> Limpiar
+                            </button>
+                        </div>
+
+                        <div class="tabla-responsive">
+                            <table class="tabla-busqueda">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Documento</th>
+                                        <th>Sector</th>
+                                        <th>Grupo</th>
+                                        <th>Cargo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyBusqueda">
+                                    <tr>
+                                        <td colspan="8" class="text-center">Realiza una búsqueda para ver resultados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configuración -->
+                <section id="configuracion" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Configuración del Sistema</h2>
+                            <p>Parámetros y configuraciones generales</p>
+                        </div>
+                    </div>
+
+                    <div class="config-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Gestión de Usuarios</h3>
+                            </div>
+                            <div class="card-body">
+                                <button class="btn btn-primary full-width" onclick="mostrarGestionUsuarios()">
+                                    <i class="fas fa-users-cog"></i> Gestionar Usuarios
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Copia de Seguridad</h3>
+                            </div>
+                            <div class="card-body">
+                                <button class="btn btn-success full-width" onclick="realizarBackup()">
+                                    <i class="fas fa-download"></i> Descargar Datos
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Información del Sistema</h3>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Versión:</strong> 1.0.0</p>
+                                <p><strong>Última actualización:</strong> Octubre 2026</p>
+                                <p><strong>Desarrollador:</strong> HR Systems</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    <!-- Modal Nuevo Empleado -->
+    <div id="modalEmpleado" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrar Nuevo Empleado</h2>
+                <button class="close-btn" onclick="cerrarModal('modalEmpleado')">&times;</button>
+            </div>
+            <form id="formEmpleado" onsubmit="guardarEmpleado(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="empleadoNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido *</label>
+                        <input type="text" id="empleadoApellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Documento *</label>
+                        <input type="text" id="empleadoDocumento" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo Documento</label>
+                        <select id="empleadoTipoDoc">
+                            <option>Cédula</option>
+                            <option>Pasaporte</option>
+                            <option>Licencia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sector *</label>
+                        <select id="empleadoSector" required onchange="cargarGruposPorSector()">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Grupo *</label>
+                        <select id="empleadoGrupo" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo *</label>
+                        <input type="text" id="empleadoCargo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Ingreso *</label>
+                        <input type="date" id="empleadoFechaIngreso" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Turno</label>
+                        <select id="empleadoTurno">
+                            <option>Diurno</option>
+                            <option>Nocturno</option>
+                            <option>Flexible</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="empleadoEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" id="empleadoTelefono">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="empleadoEstado">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <textarea id="empleadoObservaciones" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar Empleado</button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEmpleado')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Sector -->
+    <div id="modalSector" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crear Nuevo Sector</h2>
+                <button class="close-btn" onclick="cerrarModal('modalSector')">&times;</button>
+            </div>
+            <form id="formSector" onsubmit="guardarSector(event)">
+                <div class="form-group">
+                    <label>Nombre del Sector *</label>
+                    <input type="text" id="sectorNombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="sectorDescripcion" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Jefe del Sector</label>
+                    <input type="text" id="sectorJefe">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Crear Sector</button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalSector')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Grupo -->
+    <div id="modalGrupo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crear Nuevo Grupo</h2>
+                <button class="close-btn" onclick="cerrarModal('modalGrupo')">&times;</button>
+            </div>
+            <form id="formGrupo" onsubmit="guardarGrupo(event)">
+                <div class="form-group">
+                    <label>Nombre del Grupo *</label>
+                    <input type="text" id="grupoNombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Sector *</label>
+                    <select id="grupoSector" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Responsable</label>
+                    <input type="text" id="grupoResponsable">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="grupoDescripcion" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Crear Grupo</button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalGrupo')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Generar Código -->
+    <div id="modalCodigo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Generar Código de Barras</h2>
+                <button class="close-btn" onclick="cerrarModal('modalCodigo')">&times;</button>
+            </div>
+            <form id="formCodigo" onsubmit="generarCodigoBarras(event)">
+                <div class="form-group">
+                    <label>Empleado *</label>
+                    <select id="codigoEmpleado" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Código *</label>
+                    <select id="codigoTipo" required>
+                        <option value="code128">Código 128</option>
+                        <option value="qr">Código QR</option>
+                        <option value="ambos">Ambos (Código + QR)</option>
+                    </select>
+                </div>
+                <div id="previsualizacionCodigo" style="display:none; text-align: center; margin: 20px 0;">
+                    <svg id="barcode"></svg>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Generar Código</button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalCodigo')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Ver Perfil -->
+    <div id="modalPerfil" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Perfil del Empleado</h2>
+                <button class="close-btn" onclick="cerrarModal('modalPerfil')">&times;</button>
+            </div>
+            <div id="perfilContent" class="perfil-content">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" onclick="editarEmpleadoActual()">Editar</button>
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalPerfil')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Imprimir Código -->
+    <div id="modalImprimir" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Imprimir Código de Barras</h2>
+                <button class="close-btn" onclick="cerrarModal('modalImprimir')">&times;</button>
+            </div>
+            <div id="contenidoImprimir" class="contenido-imprimir">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalImprimir')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
